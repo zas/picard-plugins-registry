@@ -12,8 +12,11 @@ authors = [
   "Dvir Yitzchaki (dvirtz@gmail.com)",
 ]
 added_at = "2026-02-05T09:48:44Z"
-updated_at = "2026-02-05T09:48:44Z"
+updated_at = "2026-10-11T14:49:41Z"
 versioning_scheme = "semver"
+legacy_id = [
+  { id = "add_to_collection", version = "2" },
+]
 
 [[plugins]]
 id = "additional-artists-details"
@@ -29,8 +32,11 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2025-12-01T11:16:37Z"
-updated_at = "2025-12-02T21:36:08Z"
+updated_at = "2026-10-11T14:49:42Z"
 versioning_scheme = "semver"
+legacy_id = [
+  { id = "additional_artists_details", version = "2" },
+]
 
 [plugins.name_i18n]
 de = "Weitere Details zu den Künstlern"
@@ -54,8 +60,11 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2025-12-01T17:55:54Z"
-updated_at = "2025-12-02T22:05:40Z"
+updated_at = "2026-10-11T14:49:43Z"
 versioning_scheme = "semver"
+legacy_id = [
+  { id = "additional_artists_variables", version = "2" },
+]
 
 [plugins.name_i18n]
 de = "Zusätzliche Künstlervariablen"
@@ -129,7 +138,7 @@ authors = [
   "Philipp Wolfer",
 ]
 added_at = "2025-12-20T16:31:47Z"
-updated_at = "2026-04-27T18:03:12Z"
+updated_at = "2026-10-11T14:49:44Z"
 versioning_scheme = "semver"
 homepage = "https://git.sr.ht/~phw/picard-plugin-decade"
 license = "GPL-2.0-or-later"
@@ -141,6 +150,9 @@ E.g. `$decade(1994-04-05)` will return \"90s\". By default decades between 1920 
 will be shortened to two digits. You can disable this with setting the second parameter
 to 0, e.g. `$decade(1994,0)` will return \"1990s\"."""
 report_bugs_to = "https://todo.sr.ht/~phw/picard-plugins"
+legacy_id = [
+  { id = "decade", version = "2" },
+]
 
 [[plugins]]
 id = "fanarttv"
@@ -157,7 +169,7 @@ authors = [
   "Sambhav Kothari",
 ]
 added_at = "2025-12-16T15:21:14Z"
-updated_at = "2026-04-27T18:04:54Z"
+updated_at = "2026-10-11T14:49:44Z"
 versioning_scheme = "semver"
 maintainers = [
   "Philipp Wolfer",
@@ -170,6 +182,9 @@ Use cover art from fanart.tv.
 
 To use this plugin you have to register a personal API key on [fanart.tv](https://fanart.tv/get-an-api-key/)."""
 report_bugs_to = "https://todo.sr.ht/~phw/picard-plugins"
+legacy_id = [
+  { id = "fanarttv", version = "2" },
+]
 
 [[plugins]]
 id = "file-writer"
@@ -224,8 +239,11 @@ authors = [
   "Philipp Wolfer",
 ]
 added_at = "2025-12-17T22:36:05Z"
-updated_at = "2025-12-17T22:40:09Z"
+updated_at = "2026-10-11T14:49:45Z"
 versioning_scheme = "semver"
+legacy_id = [
+  { id = "format_performer_tags", version = "2" },
+]
 
 [[plugins]]
 id = "generate-playlist"
@@ -241,7 +259,7 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2026-10-08T20:16:47Z"
-updated_at = "2026-10-08T20:16:47Z"
+updated_at = "2026-10-11T14:49:52Z"
 homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/generate_playlist/user_guide.html"
 license = "GPL-2.0-or-later"
 license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
@@ -251,6 +269,9 @@ This plugin allows the user to generate a playlist from selected albums in Picar
 The plugin is based on the Picard v2 \"Generate M3U playlist\" plugin by Francis Chin, Sambhav Kothari, Chris Hylen, and has been converted for use with Picard v3 by Bob Swift."""
 report_bugs_to = "https://github.com/rdswift/picard-plugin-generate-playlist/issues"
 versioning_scheme = "semver"
+legacy_id = [
+  { id = "playlist", version = "2" },
+]
 
 [plugins.description_i18n]
 fr = "Ce plugin permet à l'utilisateur de créer une liste de lecture à partir d'albums sélectionnés dans Picard. Le résultat est enregistré dans un fichier `*.m3u8` contenant du texte encodé en UTF-8."
@@ -281,8 +302,11 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2025-12-18T05:28:10Z"
-updated_at = "2025-12-18T05:39:02Z"
+updated_at = "2026-10-11T14:49:46Z"
 versioning_scheme = "semver"
+legacy_id = [
+  { id = "genre_mapper", version = "2" },
+]
 
 [[plugins]]
 id = "haikuattrs"
@@ -298,7 +322,7 @@ authors = [
   "Philipp Wolfer",
 ]
 added_at = "2026-02-08T14:10:09Z"
-updated_at = "2026-04-27T18:07:32Z"
+updated_at = "2026-10-11T14:49:46Z"
 versioning_scheme = "semver"
 homepage = "https://git.sr.ht/~phw/picard-plugin-haikuattrs"
 license = "GPL-3.0-or-later"
@@ -330,6 +354,9 @@ The following BFS file attributes are supported:
 - `Media:Length`
 - `Audio:Bitrate`"""
 report_bugs_to = "https://todo.sr.ht/~phw/picard-plugins"
+legacy_id = [
+  { id = "haikuattrs", version = "2" },
+]
 
 [[plugins]]
 id = "instruments"
@@ -345,7 +372,7 @@ authors = [
   "David Mandelberg",
 ]
 added_at = "2026-09-17T20:47:40Z"
-updated_at = "2026-09-17T20:47:40Z"
+updated_at = "2026-10-11T14:49:47Z"
 license = "GPL-3.0-or-later"
 license_url = "https://www.gnu.org/licenses/gpl-3.0.html"
 long_description = "This plugin adds a multi-valued variable (~instruments) containing all the instruments (including vocals), for use in scripts."
@@ -353,6 +380,9 @@ maintainers = [
   "MusicBrainz Picard Team",
 ]
 versioning_scheme = "semver"
+legacy_id = [
+  { id = "instruments", version = "2" },
+]
 
 [[plugins]]
 id = "keep-only-tags"
@@ -387,8 +417,11 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2025-12-20T03:35:29Z"
-updated_at = "2025-12-20T03:41:24Z"
+updated_at = "2026-10-11T14:49:48Z"
 versioning_scheme = "semver"
+legacy_id = [
+  { id = "key_wheel_converter", version = "2" },
+]
 
 [[plugins]]
 id = "label-variables"
@@ -440,7 +473,7 @@ authors = [
   "Philipp Wolfer",
 ]
 added_at = "2025-12-18T16:56:18Z"
-updated_at = "2026-04-27T18:09:00Z"
+updated_at = "2026-10-11T14:49:49Z"
 versioning_scheme = "semver"
 homepage = "https://git.sr.ht/~phw/picard-plugin-loadasnat"
 license = "GPL-2.0-or-later"
@@ -455,6 +488,9 @@ Plugins -> \"Load as standalone recording…\".
 The selected tracks will get loaded as a \"standalone recording\" with release specific
 tags being removed."""
 report_bugs_to = "https://todo.sr.ht/~phw/picard-plugins"
+legacy_id = [
+  { id = "loadasnat", version = "2" },
+]
 
 [[plugins]]
 id = "losslessfuncs"
@@ -470,7 +506,7 @@ authors = [
   "Philipp Wolfer",
 ]
 added_at = "2025-12-20T14:24:01Z"
-updated_at = "2026-04-27T18:10:17Z"
+updated_at = "2026-10-11T14:49:49Z"
 versioning_scheme = "semver"
 homepage = "https://git.sr.ht/~phw/picard-plugin-losslessfuncs"
 license = "GPL-2.0-or-later"
@@ -492,6 +528,9 @@ $if($gt(%totaldiscs%,1),$if($gt(%totaldiscs%,9),$num(%discnumber%,2),%discnumber
 *Note: The lossless detection depends mainly on the file extension and does not look inside the
 file to detect the codec. For MP4 files it also checks the reported bitrate.*"""
 report_bugs_to = "https://todo.sr.ht/~phw/picard-plugins"
+legacy_id = [
+  { id = "losslessfuncs", version = "2" },
+]
 
 [[plugins]]
 id = "mod"
@@ -507,7 +546,7 @@ authors = [
   "Philipp Wolfer",
 ]
 added_at = "2025-12-17T18:42:57Z"
-updated_at = "2026-04-27T18:10:56Z"
+updated_at = "2026-10-11T14:49:50Z"
 versioning_scheme = "semver"
 homepage = "https://git.sr.ht/~phw/picard-plugin-mod"
 license = "GPL-2.0-or-later"
@@ -521,6 +560,9 @@ There is limited support for writing the title tag as track name for some format
 to a certain character length (e.g. 20 for .mod and .xm files). Titles will be
 truncated to fit this limit."""
 report_bugs_to = "https://todo.sr.ht/~phw/picard-plugins"
+legacy_id = [
+  { id = "mod", version = "2" },
+]
 
 [[plugins]]
 id = "opencc"
@@ -571,8 +613,11 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2025-12-20T19:18:28Z"
-updated_at = "2025-12-20T19:19:06Z"
+updated_at = "2026-10-11T14:49:51Z"
 versioning_scheme = "semver"
+legacy_id = [
+  { id = "performer_tag_replace", version = "2" },
+]
 
 [[plugins]]
 id = "persistent-variables"
@@ -590,8 +635,11 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2025-12-04T04:10:55Z"
-updated_at = "2025-12-04T04:10:55Z"
+updated_at = "2026-10-11T14:49:51Z"
 versioning_scheme = "semver"
+legacy_id = [
+  { id = "persistent_variables", version = "2" },
+]
 
 [plugins.name_i18n]
 de = "Persistente Variablen"
@@ -617,7 +665,7 @@ authors = [
   "Philipp Wolfer",
 ]
 added_at = "2025-12-20T15:25:15Z"
-updated_at = "2026-04-28T00:19:53Z"
+updated_at = "2026-10-11T14:49:53Z"
 maintainers = [
   "MusicBrainz Picard Team",
 ]
@@ -654,6 +702,9 @@ The following file formats are supported:
 
 This plugin is based on the original ReplayGain plugin by Philipp Wolfer and Sophist."""
 report_bugs_to = "https://tickets.metabrainz.org/issues/?filter=13410"
+legacy_id = [
+  { id = "replaygain2", version = "2" },
+]
 
 [[plugins]]
 id = "script-logger"
@@ -670,8 +721,11 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2025-12-20T21:21:58Z"
-updated_at = "2025-12-20T21:22:24Z"
+updated_at = "2026-10-11T14:49:53Z"
 versioning_scheme = "semver"
+legacy_id = [
+  { id = "script_logger", version = "2" },
+]
 
 [[plugins]]
 id = "search-engine-lookup"
@@ -687,8 +741,11 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2025-12-23T00:22:33Z"
-updated_at = "2025-12-23T00:22:33Z"
+updated_at = "2026-10-11T14:49:54Z"
 versioning_scheme = "semver"
+legacy_id = [
+  { id = "search_engine_lookup", version = "2" },
+]
 
 [[plugins]]
 id = "submit-isrc"
@@ -705,7 +762,7 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2025-12-22T21:11:44Z"
-updated_at = "2026-04-27T14:55:27Z"
+updated_at = "2026-10-11T14:49:55Z"
 versioning_scheme = "semver"
 homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/submit_isrc/user_guide.html"
 license = "GPL-2.0"
@@ -721,6 +778,9 @@ If one of the files contains an invalid ISRC, or if the same ISRC appears in the
 
 When ISRCs have been submitted, a notice will be displayed showing whether or not the submission was successful."""
 report_bugs_to = "https://github.com/rdswift/picard-plugin-submit-isrc/issues"
+legacy_id = [
+  { id = "submit_isrc", version = "2" },
+]
 
 [plugins.description_i18n]
 fr = "Ajoute une option accessible par un clic droit sur un album permettant d'envoyer les codes ISRC au serveur MusicBrainz indiqué dans les options."
@@ -754,7 +814,7 @@ authors = [
   "Philipp Wolfer",
 ]
 added_at = "2025-12-21T00:06:02Z"
-updated_at = "2026-04-27T18:13:55Z"
+updated_at = "2026-10-11T14:49:56Z"
 versioning_scheme = "semver"
 homepage = "https://git.sr.ht/~phw/picard-plugin-theaudiodb"
 license = "GPL-2.0-or-later"
@@ -769,6 +829,9 @@ TheAudioDB is a community Database of audio artwork and data. Their content is o
 possible thanks to the hard work of volunteer editors. If you like this plugin, please
 consider [registering](https://www.theaudiodb.com/user_register2.php) as an editor."""
 report_bugs_to = "https://todo.sr.ht/~phw/picard-plugins"
+legacy_id = [
+  { id = "theaudiodb", version = "2" },
+]
 
 [[plugins]]
 id = "view-script-variables"
@@ -785,7 +848,7 @@ authors = [
   "Sophist",
 ]
 added_at = "2025-12-03T23:44:25Z"
-updated_at = "2026-04-28T00:19:39Z"
+updated_at = "2026-10-11T14:49:56Z"
 maintainers = [
   "MusicBrainz Picard Team",
 ]
@@ -802,6 +865,9 @@ Display a dialog box listing the metadata tags and variables for the track / fil
 This allows you to see metadata variables beginning with \"~\" which are not normally visible in the metadata
 pane of the main Picard window, which can be useful when you are writing tagging or file naming scripts."""
 report_bugs_to = "https://tickets.metabrainz.org/issues/?filter=13410"
+legacy_id = [
+  { id = "viewvariables", version = "2" },
+]
 
 [plugins.name_i18n]
 de = "Script-Variablen anzeigen"
@@ -840,7 +906,7 @@ authors = [
   "Philipp Wolfer",
 ]
 added_at = "2025-12-17T16:26:15Z"
-updated_at = "2026-04-27T18:15:16Z"
+updated_at = "2026-10-11T14:49:57Z"
 versioning_scheme = "semver"
 homepage = "https://git.sr.ht/~phw/picard-plugin-workandmovement"
 license = "GPL-2.0-or-later"
@@ -858,6 +924,9 @@ The plugin will always set the original values, as loaded from MusicBrainz, of
 the `work` and `musicbrainz_workid` tags into the variables `%_recording_work%`
 and `%_recording_workid%` to be used in scripting."""
 report_bugs_to = "https://todo.sr.ht/~phw/picard-plugins"
+legacy_id = [
+  { id = "workandmovement", version = "2" },
+]
 
 [plugins.name_i18n]
 de = "Werk & Satz"
