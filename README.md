@@ -143,6 +143,33 @@ registry plugin redirect plugin-id --list
 registry plugin redirect plugin-id https://github.com/olduser/old-repo --remove
 ```
 
+### Map Legacy Plugin IDs
+
+Picard v1/v2 plugins were identified by a plain ID (the key in the old
+`plugins.json`) and had no UUID. To let the Picard 3 upgrade system preinstall the
+equivalent v3 plugin based on a user's previous (v2) configuration, map the legacy
+ID(s) onto the current plugin. This information is registry-only (it is not read from
+`MANIFEST.toml`).
+
+Each mapping is version-scoped (`--version`, the legacy plugin generation, default
+`2`) because the same legacy ID string may have existed in both the v1 and v2
+generations. A given legacy ID + version may be mapped to only one plugin; `registry
+validate` enforces this.
+
+```bash
+# Map a v2 plugin ID onto this plugin (version defaults to 2)
+registry plugin legacy generate-playlist playlist
+
+# Explicit legacy generation
+registry plugin legacy some-plugin old-id --version 1
+
+# List legacy IDs for a plugin
+registry plugin legacy generate-playlist --list
+
+# Remove a legacy ID mapping
+registry plugin legacy generate-playlist playlist --version 2 --remove
+```
+
 ### Manage Plugin Refs
 
 Refs allow plugins to support multiple git branches for different Picard versions:

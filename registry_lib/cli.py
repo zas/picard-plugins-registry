@@ -60,6 +60,9 @@ def _print_plugin_details(plugin: dict[str, Any], indent: str = "") -> None:
         print(f"{indent}{colors.dim('Versioning Scheme:')} {plugin['versioning_scheme']}")
     if 'redirect_from' in plugin:
         print(f"{indent}{colors.dim('Redirects from:')} {', '.join(plugin['redirect_from'])}")
+    if 'legacy_id' in plugin:
+        legacy = ', '.join(f"{e['id']} (v{e['version']})" for e in plugin['legacy_id'])
+        print(f"{indent}{colors.dim('Legacy IDs:')} {legacy}")
     print(f"{indent}{colors.dim('Added:')} {plugin['added_at']}")
     print(f"{indent}{colors.dim('Updated:')} {plugin['updated_at']}")
 
@@ -100,6 +103,19 @@ def cmd_validate(args: argparse.Namespace) -> None:
     urls = [p['git_url'] for p in registry.data['plugins']]
     if len(urls) != len(set(urls)):
         errors.append("Duplicate git URLs found")
+
+    # Check for duplicate legacy_id + version across plugins (preinstall must be unambiguous)
+    seen_legacy: dict[tuple[str, str], str] = {}
+    for plugin in registry.data['plugins']:
+        for entry in plugin.get('legacy_id', []):
+            key = (entry.get('id', ''), str(entry.get('version', '')))
+            if key in seen_legacy:
+                errors.append(
+                    f"Duplicate legacy ID '{key[0]}' (v{key[1]}) mapped to both "
+                    f"'{seen_legacy[key]}' and '{plugin['id']}'"
+                )
+            else:
+                seen_legacy[key] = plugin['id']
 
     if errors:
         for error in errors:
@@ -221,6 +237,79 @@ def cmd_plugin_redirect(args: argparse.Namespace) -> None:
         plugin["updated_at"] = now_iso8601()
         registry.save()
         print(colors.green(f"Added redirect: {args.old_url} -> {plugin['git_url']}"))
+
+
+def _legacy_entry_matches(entry: dict[str, str], legacy_id: str, version: str) -> bool:
+    """Return True if a legacy_id entry matches the given id and version."""
+    return entry.get("id") == legacy_id and str(entry.get("version", "")) == version
+
+
+def cmd_plugin_legacy(args: argparse.Namespace) -> None:
+    """Add, remove, or list legacy plugin IDs for a plugin.
+
+    A legacy_id maps a plugin from a previous Picard generation (v1/v2, which had
+    no UUIDs) to this v3 plugin, so the Picard 3 upgrade system can preinstall the
+    equivalent plugin based on the user's previous configuration. Each entry is
+    version-scoped because the same legacy ID string may have existed in different
+    legacy generations.
+    """
+    registry = Registry(args.registry)
+    plugin = get_plugin_or_exit(registry, args.plugin_id)
+
+    if args.list:
+        entries = plugin.get("legacy_id", [])
+        if not entries:
+            print("No legacy IDs defined")
+        else:
+            for entry in entries:
+                print(f"{entry['id']} (v{entry['version']}) -> {plugin['id']}")
+        return
+
+    if not args.legacy_id:
+        print("Error: legacy_id is required (or use --list)", file=sys.stderr)
+        sys.exit(1)
+
+    if args.remove:
+        entries = plugin.get("legacy_id", [])
+        remaining = [e for e in entries if not _legacy_entry_matches(e, args.legacy_id, args.version)]
+        if len(remaining) == len(entries):
+            print(
+                f"Error: Legacy ID '{args.legacy_id}' (v{args.version}) not found",
+                file=sys.stderr,
+            )
+            sys.exit(1)
+        if remaining:
+            plugin["legacy_id"] = remaining
+        else:
+            del plugin["legacy_id"]
+        plugin["updated_at"] = now_iso8601()
+        registry.save()
+        print(colors.green(f"Removed legacy ID: {args.legacy_id} (v{args.version})"))
+        return
+
+    # Add: ensure the same legacy_id+version is not already claimed by another plugin
+    for other in registry.data["plugins"]:
+        for entry in other.get("legacy_id", []):
+            if _legacy_entry_matches(entry, args.legacy_id, args.version) and other["id"] != plugin["id"]:
+                print(
+                    f"Error: Legacy ID '{args.legacy_id}' (v{args.version}) is already "
+                    f"mapped to plugin '{other['id']}'",
+                    file=sys.stderr,
+                )
+                sys.exit(1)
+
+    plugin.setdefault("legacy_id", [])
+    if any(_legacy_entry_matches(e, args.legacy_id, args.version) for e in plugin["legacy_id"]):
+        print(
+            f"Error: Legacy ID '{args.legacy_id}' (v{args.version}) already exists for this plugin",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    plugin["legacy_id"].append({"id": args.legacy_id, "version": args.version})
+    plugin["updated_at"] = now_iso8601()
+    registry.save()
+    print(colors.green(f"Added legacy ID: {args.legacy_id} (v{args.version}) -> {plugin['id']}"))
 
 
 def cmd_plugin_ref_add(args: argparse.Namespace) -> None:
@@ -558,6 +647,21 @@ def main() -> None:
     redirect_parser.add_argument("--remove", action="store_true", help="Remove redirect instead of adding")
     redirect_parser.add_argument("--list", action="store_true", help="List all redirects")
     redirect_parser.set_defaults(func=cmd_plugin_redirect)
+
+    # plugin legacy
+    legacy_parser = plugin_subparsers.add_parser(
+        "legacy", help="Manage legacy (v1/v2) plugin ID mappings for the upgrade system"
+    )
+    legacy_parser.add_argument("plugin_id", help="Plugin ID")
+    legacy_parser.add_argument("legacy_id", nargs="?", help="Legacy plugin ID (from v1/v2 plugins.json)")
+    legacy_parser.add_argument(
+        "--version",
+        default="2",
+        help="Legacy plugin generation the ID belongs to (e.g. '1' or '2'; default: 2)",
+    )
+    legacy_parser.add_argument("--remove", action="store_true", help="Remove legacy ID instead of adding")
+    legacy_parser.add_argument("--list", action="store_true", help="List all legacy IDs")
+    legacy_parser.set_defaults(func=cmd_plugin_legacy)
 
     # plugin remove
     remove_parser = plugin_subparsers.add_parser("remove", help="Remove plugin")

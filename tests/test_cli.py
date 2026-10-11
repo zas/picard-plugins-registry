@@ -2,6 +2,8 @@
 
 from unittest.mock import patch
 
+import pytest
+
 from registry_lib.cli import main
 
 
@@ -184,6 +186,121 @@ def test_cli_validate(mock_registry):
     main()
 
     # Should not raise any errors
+
+
+@patch("sys.argv", ["registry", "plugin", "legacy", "test-plugin", "playlist", "--version", "2"])
+@patch("registry_lib.cli.Registry")
+def test_cli_plugin_legacy_add(mock_registry):
+    """Test plugin legacy add command."""
+    mock_plugin = {"id": "test-plugin", "name": "Test Plugin"}
+    mock_registry.return_value.data = {"plugins": [mock_plugin]}
+    mock_registry.return_value.find_plugin.return_value = mock_plugin
+
+    main()
+
+    assert mock_plugin["legacy_id"] == [{"id": "playlist", "version": "2"}]
+    mock_registry.return_value.save.assert_called_once()
+
+
+@patch("sys.argv", ["registry", "plugin", "legacy", "test-plugin", "playlist"])
+@patch("registry_lib.cli.Registry")
+def test_cli_plugin_legacy_add_default_version(mock_registry):
+    """Test plugin legacy add defaults version to 2."""
+    mock_plugin = {"id": "test-plugin", "name": "Test Plugin"}
+    mock_registry.return_value.data = {"plugins": [mock_plugin]}
+    mock_registry.return_value.find_plugin.return_value = mock_plugin
+
+    main()
+
+    assert mock_plugin["legacy_id"] == [{"id": "playlist", "version": "2"}]
+
+
+@patch("sys.argv", ["registry", "plugin", "legacy", "test-plugin", "playlist", "--version", "2", "--remove"])
+@patch("registry_lib.cli.Registry")
+def test_cli_plugin_legacy_remove(mock_registry):
+    """Test plugin legacy remove command."""
+    mock_plugin = {
+        "id": "test-plugin",
+        "name": "Test Plugin",
+        "legacy_id": [{"id": "playlist", "version": "2"}],
+    }
+    mock_registry.return_value.data = {"plugins": [mock_plugin]}
+    mock_registry.return_value.find_plugin.return_value = mock_plugin
+
+    main()
+
+    assert "legacy_id" not in mock_plugin
+    mock_registry.return_value.save.assert_called_once()
+
+
+@patch("sys.argv", ["registry", "plugin", "legacy", "test-plugin", "--list"])
+@patch("registry_lib.cli.Registry")
+def test_cli_plugin_legacy_list(mock_registry, capsys):
+    """Test plugin legacy list command."""
+    mock_plugin = {
+        "id": "test-plugin",
+        "name": "Test Plugin",
+        "legacy_id": [{"id": "playlist", "version": "2"}],
+    }
+    mock_registry.return_value.data = {"plugins": [mock_plugin]}
+    mock_registry.return_value.find_plugin.return_value = mock_plugin
+
+    main()
+
+    captured = capsys.readouterr()
+    assert "playlist (v2) -> test-plugin" in captured.out
+
+
+@patch(
+    "sys.argv",
+    ["registry", "plugin", "legacy", "test-plugin", "playlist", "--version", "2"],
+)
+@patch("registry_lib.cli.Registry")
+def test_cli_plugin_legacy_add_duplicate_other_plugin(mock_registry):
+    """Test adding a legacy ID already claimed by another plugin fails."""
+    other = {"id": "other-plugin", "legacy_id": [{"id": "playlist", "version": "2"}]}
+    target = {"id": "test-plugin", "name": "Test Plugin"}
+    mock_registry.return_value.data = {"plugins": [other, target]}
+    mock_registry.return_value.find_plugin.return_value = target
+
+    with pytest.raises(SystemExit):
+        main()
+
+    assert "legacy_id" not in target
+    mock_registry.return_value.save.assert_not_called()
+
+
+@patch("sys.argv", ["registry", "validate"])
+@patch("registry_lib.cli.Registry")
+def test_cli_validate_duplicate_legacy_id(mock_registry):
+    """Test validate detects duplicate legacy_id+version across plugins."""
+    mock_registry.return_value.data = {
+        "plugins": [
+            {"id": "p1", "uuid": "u1", "git_url": "url1", "legacy_id": [{"id": "playlist", "version": "2"}]},
+            {"id": "p2", "uuid": "u2", "git_url": "url2", "legacy_id": [{"id": "playlist", "version": "2"}]},
+        ],
+        "blacklist": [],
+    }
+
+    with pytest.raises(SystemExit):
+        main()
+
+
+@patch("sys.argv", ["registry", "validate"])
+@patch("registry_lib.cli.Registry")
+def test_cli_validate_same_legacy_id_different_version(mock_registry):
+    """Test validate allows same legacy id across different legacy versions."""
+    mock_registry.return_value.data = {
+        "plugins": [
+            {"id": "p1", "uuid": "u1", "git_url": "url1", "legacy_id": [{"id": "lastfm", "version": "1"}]},
+            {"id": "p2", "uuid": "u2", "git_url": "url2", "legacy_id": [{"id": "lastfm", "version": "2"}]},
+        ],
+        "blacklist": [],
+    }
+
+    main()
+
+    # Should not raise: same id but different legacy generation is allowed
 
 
 @patch("sys.argv", ["registry", "plugin", "show", "test-plugin"])
